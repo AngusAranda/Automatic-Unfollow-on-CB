@@ -15,9 +15,6 @@ Built for users with **hundreds or even thousands of follows**, this script auto
 - ✅ **Safe reloads** even when tab is inactive
 - ✅ Floating control panel (bottom right)
 - ✅ Spinner + Remaining unfollow count
-- ✅ Works on both:
-  - `https://chaturbate.com/followed-cams`
-  - `https://chaturbate.com/followed-cams/offline`
 
 ---
 
