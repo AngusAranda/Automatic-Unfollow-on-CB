@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Chaturbate Unfollow Manager – Auto-Refresh Safe
-// @namespace    https://github.com/AngusAranda/Automatic-Unfollow-on-CB-Site/
-// @version      1.8
-// @description  UI unfollow controller with safe auto-refresh for background tabs
+// @name         CB Unfollow Manager
+// @namespace    https://github.com/AngusAranda/Automatic-Unfollow-on-CB/
+// @version      3.0
+// @description  Clean, fast, and reliable auto-unfollow with UI, refresh, and full control
 // @match        https://chaturbate.com/followed-cams
 // @match        https://chaturbate.com/followed-cams/
 // @match        https://chaturbate.com/followed-cams/offline
@@ -20,25 +20,25 @@
   let timeoutHandles = [];
   let isRunning = false;
 
-  // Safe reload logic to handle background tabs
+  // Ensure refresh works even if tab is inactive
   function safeReload() {
     if (document.visibilityState === 'visible') {
       window.location.href = window.location.href;
     } else {
       window.__pendingAutoReload = true;
-      console.log('⏸ Tab is not visible, reload delayed...');
+      console.log('⏸ Tab not visible — delaying reload');
     }
   }
 
-  document.addEventListener("visibilitychange", () => {
+  document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible' && window.__pendingAutoReload) {
       window.__pendingAutoReload = false;
-      console.log('▶️ Tab is now visible, reloading...');
+      console.log('▶️ Tab visible again — refreshing now');
       window.location.href = window.location.href;
     }
   });
 
-  // Inject spinner animation
+  // Inject CSS spinner
   const spinnerCSS = `
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -133,34 +133,32 @@
     buttons.forEach((btn, i) => {
       const handle = setTimeout(() => {
         if (!isRunning) return;
-        if (btn.isConnected) {
-          btn.click();
-          remaining--;
-          countDisplay.textContent = `Remaining: ${remaining}`;
-          console.log(`🚫 Unfollowed #${i + 1}`);
-        }
-
-        if (i === buttons.length - 1) {
-          setTimeout(() => {
-            statusDisplay.style.display = "none";
-            startBtn.textContent = "Start Unfollowing";
-            startBtn.disabled = false;
-            isRunning = false;
-            timeoutHandles = [];
-            if (autoMode) safeReload();
-          }, postUnfollowWait);
-        }
+        btn.click();
+        remaining--;
+        countDisplay.textContent = `Remaining: ${remaining}`;
+        console.log(`🚫 Unfollowed #${i + 1}`);
       }, i * unfollowDelay);
-
       timeoutHandles.push(handle);
     });
+
+    const totalTime = total * unfollowDelay + postUnfollowWait;
+
+    setTimeout(() => {
+      if (isRunning) {
+        statusDisplay.style.display = 'none';
+        startBtn.textContent = 'Start Unfollowing';
+        isRunning = false;
+        timeoutHandles = [];
+        if (autoMode) safeReload();
+      }
+    }, totalTime);
   }
 
   function runAutoIfEnabled() {
     const enabled = localStorage.getItem(localStorageKey) === 'true';
     if (enabled) {
       console.log("⚙️ Auto Mode is ON — starting unfollow loop...");
-      setTimeout(() => unfollowAllVisible(true), 2000);
+      setTimeout(() => unfollowAllVisible(true), 1000);
     }
   }
 
