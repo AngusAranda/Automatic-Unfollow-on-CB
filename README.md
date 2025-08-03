@@ -28,7 +28,7 @@ Built for users with **hundreds or even thousands of follows**, this script auto
    - [Firefox](https://tampermonkey.net/?ext=dhdg&browser=firefox)
 2. Open Tampermonkey dashboard
 3. Click **"Create a new script"**
-4. Replace the template with the contents of [`chaturbate-unfollow-manager.user.js`](./chaturbate-unfollow-manager.user.js)
+4. Replace the template with the contents of [`chaturbate-unfollow-manager.user.js`](./cb-unfollow-manager.user.js)
 5. Save the script
 6. Go to your [Followed Cams page](https://chaturbate.com/followed-cams) and start unfollowing!
 
